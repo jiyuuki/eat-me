@@ -1,12 +1,22 @@
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 const snake = [{ x: 150, y: 100 }, { x: 140, y: 100 }, { x: 130, y: 100 }, { x: 120, y: 100 }];
+const xPixelSpeed = 10;
+const yPixelSpeed = -10;
 
 ctx.fillStyle = "white";
 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
 ctx.strokeStyle = "blue";
 ctx.strokeRect(0, 0, canvas.width, canvas.height);
+
+let clearCanvas = () {
+
+}
+
+let animateSnake = () {
+
+}
 
 let drawPieces = (piece) => {
     ctx.fillStyle = "yellow";
@@ -24,7 +34,7 @@ let drawSnake = () => {
 }
 
 let moveSnake = () => {
-    let head = { x: snake[0].x + 10, y: snake[0].y };
+    let head = { x: snake[0].x + pixelSpeed, y: snake[0].y + yPixelSpeed };
     snake.unshift(head);
     snake.pop();
 }
