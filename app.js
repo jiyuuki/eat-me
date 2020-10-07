@@ -1,25 +1,21 @@
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
-const snake = [{ x: 150, y: 100 }, { x: 140, y: 100 }, { x: 130, y: 100 }, { x: 120, y: 100 }];
+const snake = [{ x: 140, y: 150 }, { x: 130, y: 150 }, { x: 120, y: 150 }, { x: 110, y: 150 }];
 const xPixelSpeed = 10;
-const yPixelSpeed = -10;
+const yPixelSpeed = 0;
 
-ctx.fillStyle = "white";
-ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-ctx.strokeStyle = "blue";
-ctx.strokeRect(0, 0, canvas.width, canvas.height);
-
-let clearCanvas = () {
-
-}
-
-let animateSnake = () {
+let clearCanvas = () => {
+    ctx.fillStyle = "white";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                     
+    ctx.strokeStyle = "blue";
+    ctx.strokeRect(0, 0, canvas.width, canvas.height);
 
 }
 
 let drawPieces = (piece) => {
-    ctx.fillStyle = "yellow";
+    ctx.fillStyle = "green";
     ctx.fillRect(piece.x, piece.y, 10, 10);
 
     ctx.strokeStyle = "black";
@@ -34,10 +30,55 @@ let drawSnake = () => {
 }
 
 let moveSnake = () => {
-    let head = { x: snake[0].x + pixelSpeed, y: snake[0].y + yPixelSpeed };
+    let head = { x: snake[0].x + xPixelSpeed, y: snake[0].y - yPixelSpeed};
     snake.unshift(head);
     snake.pop();
 }
 
-moveSnake();
-drawSnake();
+let animateSnake = () => {
+    setTimeout(function(){
+        clearCanvas();
+        moveSnake();
+        drawSnake();
+        animateSnake();
+    },100);
+}
+animateSnake();
+
+document.addEventListener('keydown', changeDirection);
+
+function changeDirection (event) {
+    console.log(event);
+    const ARROW_UP = 38;
+    const ARROW_DOWN = 40;
+    const ARROW_LEFT = 37;
+    const ARROW_RIGHT = 39;
+
+    const DIRECTION = event.keycode;
+
+    const GO_UP = yPixelSpeed === -10;
+    const GO_DOWN = yPixelSpeed === 10;
+    const GO_LEFT = xPixelSpeed === -10;
+    const GO_RIGHT = xPixelSpeed === 10;
+
+    if(DIRECTION === ARROW_UP && !GO_DOWN){
+        yPixelSpeed = -10;
+        xPixelSpeed = 0;
+        
+    }
+
+    if(DIRECTION === ARROW_DOWN && !GO_UP){
+        yPixelSpeed = 10;
+        xPixelSpeed = 0;
+    }
+
+    if(DIRECTION === ARROW_LEFT && !GO_RIGHT){
+        xPixelSpeed = -10;
+        yPixelSpeed = 0;
+    }
+
+    if(DIRECTION === ARROW_RIGHT && !GO_LEFT){
+        xPixelSpeed = 10;
+        yPixelSpeed = 0;
+    }
+}
