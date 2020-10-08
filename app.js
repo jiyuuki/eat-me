@@ -80,8 +80,7 @@ let applePosition = () => {
 let drawApple = () => {
     ctx.fillStyle = 'red';
     ctx.strokeStyle = 'darkred';
-    ctx.beginPath();
-    ctx.arc(position.appleX, position.appleY, 5, 0, 2 * Math.PI);
+    ctx.arc(position.appleX + 5, position.appleY + 5, 5, 0, 2 * Math.PI);
     ctx.fill();
     ctx.stroke();
 }
