@@ -3,7 +3,8 @@ const ctx = canvas.getContext('2d');
 const snake = [{ x: 140, y: 150 }, { x: 130, y: 150 }, { x: 120, y: 150 }, { x: 110, y: 150 }];
 let xPixelSpeed = 10;
 let yPixelSpeed = 0;
-let position = {};
+let appleX;
+let appleY;
 
 
 let clearCanvas = () => {
@@ -33,7 +34,12 @@ let drawSnake = () => {
 let moveSnake = () => {
     let head = { x: snake[0].x + xPixelSpeed, y: snake[0].y + yPixelSpeed };
     snake.unshift(head);
-    snake.pop();
+    const snakeEatApple = snake[0].x === appleX && snake[0].y === appleY;
+    if(snakeEatApple){
+        appleNewPosition();
+    }else{
+        snake.pop();
+    }
 }
 
 let changeDirection = (event) => {
@@ -72,19 +78,21 @@ let changeDirection = (event) => {
 
 document.addEventListener('keydown', changeDirection);
 
-let applePosition = () => {
-    position = { appleX: Math.round((Math.random() * 290) / 10) * 10, appleY: Math.round((Math.random() * 290) / 10) * 10 }
-    return position;
+let appleNewPosition = () => {
+    appleX = Math.round((Math.random() * 290) / 10) * 10;
+    appleY = Math.round((Math.random() * 290) / 10) * 10;
 }
 
 let drawApple = () => {
     ctx.fillStyle = 'red';
     ctx.strokeStyle = 'darkred';
-    ctx.arc(position.appleX + 5, position.appleY + 5, 5, 0, 2 * Math.PI);
+    ctx.beginPath();
+    ctx.arc(appleX + 5, appleY + 5, 5, 0, 2 * Math.PI);
     ctx.fill();
     ctx.stroke();
 }
 
+appleNewPosition();
 let animateSnake = () => {
     setTimeout(function () {
         clearCanvas();
@@ -94,5 +102,4 @@ let animateSnake = () => {
         animateSnake();
     }, 100);
 }
-applePosition();
 animateSnake();
