@@ -5,6 +5,8 @@ let xPixelSpeed = 10;
 let yPixelSpeed = 0;
 let appleX;
 let appleY;
+let score = 0;
+let stopGame = false;
 
 
 let clearCanvas = () => {
@@ -34,8 +36,18 @@ let drawSnake = () => {
 let moveSnake = () => {
     let head = { x: snake[0].x + xPixelSpeed, y: snake[0].y + yPixelSpeed };
     snake.unshift(head);
+
+    if (end()) {
+        snake.shift(head);
+        restartGame();
+        stopGame = true;
+        return;
+    }
+
     const snakeEatApple = snake[0].x === appleX && snake[0].y === appleY;
     if (snakeEatApple) {
+        score += 10;
+        document.getElementById('score').innerHTML = score;
         appleNewPosition();
     } else {
         snake.pop();
@@ -97,14 +109,49 @@ let drawApple = () => {
     ctx.stroke();
 }
 
+let end = () => {
+    let snakeBody = snake.slice(1, -1);
+    let bitten;
+    snakeBody.forEach(piece => {
+        if (snake[0].x === piece.x && snake[0].y === piece.y) {
+            bitten = true;
+        }
+    });
+    let TOUCH_LEFT_WALL = snake[0].x < -1;
+    let TOUCH_RIGHT_WALL = snake[0].x > canvas.width - 10;
+    let TOUCH_UP_WALL = snake[0].y < -1;
+    let TOUCH_DOWN_WALL = snake[0].y > canvas.height - 10;
+
+    let gameOver = false;
+
+    if (bitten || TOUCH_LEFT_WALL || TOUCH_RIGHT_WALL || TOUCH_UP_WALL || TOUCH_DOWN_WALL) {
+        gameOver = true;
+    }
+
+    return gameOver;
+}
+
+let restartGame = () => {
+    document.getElementById('info').style.display = "block";
+    document.addEventListener('keydown', (event) => {
+        if (event.keyCode === 32) {
+            document.location.reload(true);
+        }
+    })
+}
+
 appleNewPosition();
 let animateSnake = () => {
-    setTimeout(function () {
-        clearCanvas();
-        drawApple();
-        moveSnake();
-        drawSnake();
-        animateSnake();
-    }, 100);
+    if (stopGame) {
+        return;
+    } else {
+        setTimeout(() => {
+            clearCanvas();
+            drawApple();
+            moveSnake();
+            drawSnake();
+            animateSnake();
+        }, 100);
+    }
 }
 animateSnake();
