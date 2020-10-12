@@ -35,9 +35,9 @@ let moveSnake = () => {
     let head = { x: snake[0].x + xPixelSpeed, y: snake[0].y + yPixelSpeed };
     snake.unshift(head);
     const snakeEatApple = snake[0].x === appleX && snake[0].y === appleY;
-    if(snakeEatApple){
+    if (snakeEatApple) {
         appleNewPosition();
-    }else{
+    } else {
         snake.pop();
     }
 }
@@ -81,6 +81,11 @@ document.addEventListener('keydown', changeDirection);
 let appleNewPosition = () => {
     appleX = Math.round((Math.random() * 290) / 10) * 10;
     appleY = Math.round((Math.random() * 290) / 10) * 10;
+    snake.forEach(piece => {
+        if (piece.x === appleX && piece.y === appleY.y) {
+            appleNewPosition();
+        }
+    });
 }
 
 let drawApple = () => {
