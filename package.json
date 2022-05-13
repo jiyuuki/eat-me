@@ -1,0 +1,23 @@
+{
+  "name": "eat-me",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/salmaelhajraoui/eat-me.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/salmaelhajraoui/eat-me/issues"
+  },
+  "homepage": "https://github.com/salmaelhajraoui/eat-me#readme",
+  "devDependencies": {
+    "jest": "^26.5.3"
+  }
+}
